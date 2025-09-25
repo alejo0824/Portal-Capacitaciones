@@ -29,14 +29,12 @@ public class AuthController {
         public String password;
     }
 
-    // POST - Login simulado
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(request.username);
         
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
-            // Login simulado - en producción usar BCrypt
             if (usuario.getPassword().equals(request.password)) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("success", true);
@@ -52,10 +50,33 @@ public class AuthController {
         return ResponseEntity.status(401).body(response);
     }
     
-    // POST - Registrar usuario (para pruebas)
     @PostMapping("/register")
-    public Usuario registrar(@RequestBody Usuario usuario) {
-        return usuarioRepository.save(usuario);
+    public ResponseEntity<?> registrar(@RequestBody Usuario usuario) {
+        Map<String, Object> response = new HashMap<>();
+        
+        // Validar username duplicado
+        Optional<Usuario> usuarioExistente = usuarioRepository.findByUsername(usuario.getUsername());
+        if (usuarioExistente.isPresent()) {
+            response.put("success", false);
+            response.put("message", "El nombre de usuario ya está en uso");
+            return ResponseEntity.status(409).body(response);
+        }
+        
+        // Validar email duplicado
+        Optional<Usuario> emailExistente = usuarioRepository.findByEmail(usuario.getEmail());
+        if (emailExistente.isPresent()) {
+            response.put("success", false);
+            response.put("message", "El email ya está registrado");
+            return ResponseEntity.status(409).body(response);
+        }
+        
+        // Si todo está bien, registrar usuario
+        Usuario nuevoUsuario = usuarioRepository.save(usuario);
+        response.put("success", true);
+        response.put("usuario", nuevoUsuario);
+        response.put("message", "Usuario registrado exitosamente");
+        
+        return ResponseEntity.ok(response);
     }
     
     // GET - Endpoint de prueba

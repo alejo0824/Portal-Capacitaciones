@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { LoginRequest, LoginResponse, Usuario } from '../models/models';
+import { LoginRequest, LoginResponse, RegisterResponse, Usuario } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,6 @@ export class AuthService {
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    // Cargar usuario del localStorage al iniciar
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
       this.currentUserSubject.next(JSON.parse(savedUser));
@@ -30,8 +29,8 @@ export class AuthService {
     );
   }
 
-  register(usuario: Usuario): Observable<Usuario> {
-    return this.http.post<Usuario>(`${this.apiUrl}/register`, usuario);
+  register(usuario: Usuario): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, usuario);
   }
 
   logout(): void {
@@ -45,5 +44,10 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return this.currentUserSubject.value !== null;
+  }
+
+  isAdmin(): boolean {
+    const user = this.currentUserSubject.value;
+    return user?.rol === 'ADMIN';
   }
 }

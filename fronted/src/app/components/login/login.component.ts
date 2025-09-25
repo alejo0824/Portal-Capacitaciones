@@ -14,7 +14,7 @@ import { AuthService } from '../../services/auth.service';
         <div class="col-md-6">
           <div class="card shadow">
             <div class="card-body p-5">
-              <h2 class="text-center mb-4">🎓 Portal de Capacitaciones</h2>
+              <h2 class="text-center mb-4">Portal de Capacitaciones</h2>
               <h5 class="text-center text-muted mb-4">Iniciar Sesión</h5>
               
               <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
@@ -131,7 +131,7 @@ import { AuthService } from '../../services/auth.service';
               <!-- Info de prueba -->
               <div class="mt-4 p-3 bg-light rounded">
                 <small class="text-muted">
-                  <strong>💡 Usuario de prueba:</strong><br>
+                  <strong>Usuario de prueba:</strong><br>
                   Usuario: admin | Contraseña: 1234
                 </small>
               </div>
@@ -172,7 +172,12 @@ export class LoginComponent {
       next: (response) => {
         this.loading = false;
         if (response.success) {
-          this.router.navigate(['/dashboard']);
+          // Redirigir según el rol
+          if (response.usuario?.rol === 'ADMIN') {
+            this.router.navigate(['/admin']);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
         } else {
           this.errorMessage = response.message;
         }
@@ -190,13 +195,21 @@ export class LoginComponent {
     this.successMessage = '';
 
     this.authService.register(this.newUser).subscribe({
-      next: (usuario) => {
-        this.successMessage = '✅ Usuario registrado exitosamente. Ya puedes iniciar sesión.';
-        this.showRegister = false;
-        this.newUser = { username: '', password: '', email: '', nombreCompleto: '' };
+      next: (response) => {
+        if (response.success) {
+          this.successMessage = 'Usuario registrado exitosamente. Ya puedes iniciar sesión.';
+          this.showRegister = false;
+          this.newUser = { username: '', password: '', email: '', nombreCompleto: '' };
+        } else {
+          this.errorMessage = response.message;
+        }
       },
       error: (error) => {
-        this.errorMessage = 'Error al registrar usuario';
+        if (error.status === 409) {
+          this.errorMessage = error.error.message || 'El usuario o email ya existe';
+        } else {
+          this.errorMessage = 'Error al registrar usuario';
+        }
         console.error('Error registro:', error);
       }
     });

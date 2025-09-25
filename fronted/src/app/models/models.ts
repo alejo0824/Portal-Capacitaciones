@@ -1,10 +1,10 @@
-
 export interface Usuario {
   id?: string;
   username: string;
   password?: string;
   email: string;
   nombreCompleto: string;
+  rol?: string; // 'ADMIN' o 'USER'
 }
 
 export interface Curso {
@@ -42,4 +42,24 @@ export interface LoginResponse {
   success: boolean;
   usuario?: Usuario;
   message: string;
+}
+
+export interface RegisterResponse {
+  success: boolean;
+  usuario?: Usuario;
+  message: string;
+}
+
+export interface AdminStats {
+  totalUsuarios: number;
+  totalCursos: number;
+  cursosPorModulo: { [key: string]: number };
+  totalCompletados: number;
+  totalEnProgreso: number;
+}
+
+export interface UsuarioProgreso {
+  progresos: Progreso[];
+  completados: number;
+  enProgreso: number;
 }
