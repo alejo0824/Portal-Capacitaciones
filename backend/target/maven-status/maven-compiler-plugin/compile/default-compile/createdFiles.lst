@@ -1,0 +1,15 @@
+com\capacitaciones\portal_capacitaciones\model\Usuario.class
+com\capacitaciones\portal_capacitaciones\controller\InsigniaController.class
+com\capacitaciones\portal_capacitaciones\repository\InsigniaRepository.class
+com\capacitaciones\portal_capacitaciones\controller\CursoController.class
+com\capacitaciones\portal_capacitaciones\model\Insignia.class
+com\capacitaciones\portal_capacitaciones\repository\ProgresoRepository.class
+com\capacitaciones\portal_capacitaciones\controller\ProgresoController$ProgresoRequest.class
+com\capacitaciones\portal_capacitaciones\controller\ProgresoController.class
+com\capacitaciones\portal_capacitaciones\repository\CursoRepository.class
+com\capacitaciones\portal_capacitaciones\model\Progreso.class
+com\capacitaciones\portal_capacitaciones\model\Curso.class
+com\capacitaciones\portal_capacitaciones\PortalCapacitacionesApplication.class
+com\capacitaciones\portal_capacitaciones\repository\UsuarioRepository.class
+com\capacitaciones\portal_capacitaciones\controller\AuthController$LoginRequest.class
+com\capacitaciones\portal_capacitaciones\controller\AuthController.class

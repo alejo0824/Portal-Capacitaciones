@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PortalCapacitacionesApplication<portal-capacitaciones>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.capacitaciones.portal_capacitaciones.PortalCapacitacionesApplication",
+            "projectName": "portal-capacitaciones",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
