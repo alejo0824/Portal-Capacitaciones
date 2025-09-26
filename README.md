@@ -1,60 +1,249 @@
-# Portal-Capacitaciones
+# Portal de Capacitaciones - Kata Junior Fullstack/Cloud
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.2.
+Sistema completo de gestión de capacitaciones con seguimiento de progreso, insignias y panel administrativo.
 
-## Development server
+## 🚀 Stack Tecnológico
 
-To start a local development server, run:
+### Backend
+- Java 17
+- Spring Boot 3.x
+- MongoDB
+- Maven
+
+### Frontend
+- Angular 22 (Standalone Components)
+- Bootstrap 5
+- TypeScript
+
+## 📋 Funcionalidades Implementadas
+
+### Para Usuarios Normales
+- ✅ Registro e inicio de sesión
+- ✅ Validación de usuarios duplicados
+- ✅ Dashboard con 4 módulos (Fullstack, APIs, Cloud, DataEngineer)
+- ✅ Visualización de cursos por módulo
+- ✅ Iniciar y completar cursos
+- ✅ Sistema de insignias automático
+- ✅ Perfil de usuario con historial
+- ✅ Seguimiento de progreso
+
+### Para Administradores
+- ✅ Panel de administración completo
+- ✅ Estadísticas generales del sistema
+- ✅ Gestión de usuarios
+- ✅ Ver progreso de cada usuario
+- ✅ Crear, editar y eliminar cursos
+- ✅ Visualización de métricas por módulo
+
+## 🔧 Instalación y Configuración
+
+### Requisitos Previos
+- Java 17 o superior
+- Node.js 18+ y npm
+- MongoDB instalado y corriendo
+- Git
+
+### 1. Clonar el Repositorio
+```bash
+git clone <tu-repositorio>
+cd portal-capacitaciones
+```
+
+### 2. Configurar MongoDB
+
+#### Iniciar MongoDB
+```bash
+# Windows
+mongod
+
+# Linux/Mac
+sudo systemctl start mongodb
+```
+
+#### Inicializar Base de Datos
+```bash
+# Usando mongosh
+mongosh
+use capacitaciones_pruebas
+
+# Copiar y pegar el contenido de init-db.js
+```
+
+O ejecutar directamente:
+```bash
+mongosh < init-db.js
+```
+
+### 3. Configurar Backend
 
 ```bash
+cd backend
+
+# Instalar dependencias (Maven las descargará automáticamente)
+mvn clean install
+
+# Ejecutar aplicación
+mvn spring-boot:run
+```
+
+El backend estará disponible en: `http://localhost:8081`
+
+### 4. Configurar Frontend
+
+```bash
+cd frontend
+
+# Instalar dependencias
+npm install
+
+# Ejecutar en modo desarrollo
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+El frontend estará disponible en: `http://localhost:4200`
 
-## Code scaffolding
+## 👤 Usuarios de Prueba
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Usuario Administrador
+- **Usuario:** `admin`
+- **Contraseña:** `1234`
+- **Acceso:** Panel de administración completo
 
-```bash
-ng generate component component-name
+### Usuario Normal
+- **Usuario:** `usuario1`
+- **Contraseña:** `1234`
+- **Acceso:** Dashboard de estudiante
+
+## 📁 Estructura del Proyecto
+
+```
+portal-capacitaciones/
+├── backend/
+│   ├── src/main/java/.../
+│   │   ├── controller/
+│   │   │   ├── AuthController.java
+│   │   │   ├── CursoController.java
+│   │   │   ├── ProgresoController.java
+│   │   │   ├── InsigniaController.java
+│   │   │   └── AdminController.java
+│   │   ├── model/
+│   │   │   ├── Usuario.java
+│   │   │   ├── Curso.java
+│   │   │   ├── Progreso.java
+│   │   │   └── Insignia.java
+│   │   └── repository/
+│   └── pom.xml
+│
+├── frontend/
+│   ├── src/app/
+│   │   ├── components/
+│   │   │   ├── login/
+│   │   │   ├── dashboard/
+│   │   │   ├── perfil/
+│   │   │   └── admin/
+│   │   ├── services/
+│   │   │   ├── auth.service.ts
+│   │   │   ├── curso.service.ts
+│   │   │   ├── progreso.service.ts
+│   │   │   └── admin.service.ts
+│   │   └── models/
+│   └── package.json
+│
+└── init-db.js
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🔐 Sistema de Roles
 
-```bash
-ng generate --help
+### USER (Usuario Normal)
+- Ver dashboard personal
+- Iniciar y completar cursos
+- Ver insignias obtenidas
+- Acceder a perfil personal
+
+### ADMIN (Administrador)
+- Todo lo anterior +
+- Ver panel de administración
+- Gestionar todos los cursos
+- Ver todos los usuarios
+- Ver estadísticas globales
+- Crear/Editar/Eliminar cursos
+
+## 🗄️ Colecciones MongoDB
+
+### usuarios
+```javascript
+{
+  _id: ObjectId,
+  username: String,
+  password: String,
+  email: String,
+  nombreCompleto: String,
+  rol: String // "USER" o "ADMIN"
+}
 ```
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
+### cursos
+```javascript
+{
+  _id: ObjectId,
+  nombre: String,
+  descripcion: String,
+  modulo: String,
+  insignia: String
+}
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+### progresos
+```javascript
+{
+  _id: ObjectId,
+  usuarioId: String,
+  cursoId: String,
+  estado: String, // "iniciado" o "completado"
+  fechaInicio: DateTime,
+  fechaCompletado: DateTime
+}
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+### insignias
+```javascript
+{
+  _id: ObjectId,
+  usuarioId: String,
+  cursoId: String,
+  nombreCurso: String,
+  imagen: String,
+  fechaObtencion: DateTime
+}
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 🛠️ APIs Disponibles
 
-## Additional Resources
+### Autenticación
+- `POST /api/auth/login` - Iniciar sesión
+- `POST /api/auth/register` - Registrar usuario
+- `GET /api/auth/test` - Test de conexión
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Cursos
+- `GET /api/cursos` - Obtener todos los cursos
+- `GET /api/cursos/modulo/{modulo}` - Cursos por módulo
+- `POST /api/cursos` - Crear curso (solo admin)
 
+### Progreso
+- `GET /api/progreso/usuario/{id}` - Progreso de usuario
+- `POST /api/progreso` - Actualizar progreso
+- `GET /api/progreso/usuario/{id}/completados` - Cursos completados
+
+### Insignias
+- `GET /api/insignias/usuario/{id}` - Insignias de usuario
+- `GET /api/insignias` - Todas las insignias
+
+### Admin (Solo ADMIN)
+- `GET /api/admin/usuarios` - Todos los usuarios
+- `GET /api/admin/usuarios/{id}/progreso` - Progreso de usuario
+- `POST /api/admin/cursos` - Crear curso
+- `PUT /api/admin/cursos/{id}` - Actualizar curso
+- `DELETE /api/admin/cursos/{id}` - Eliminar curso
+- `GET /api/admin/estadisticas` - Estadísticas generales
+
+Proyecto educativo - Kata Junior Fullstack/Cloud
